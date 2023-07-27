@@ -83,5 +83,8 @@ public class User {
         this.password = password;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
 
 }
