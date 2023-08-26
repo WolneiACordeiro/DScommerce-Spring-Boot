@@ -3,19 +3,43 @@ package com.devsuperior.dscommerce.services;
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProductService {
+
+    @Autowired
+    ModelMapper mapper;
+
     @Autowired
     private ProductRepository repository;
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Product product = repository.findById(id).get();
-        return new ProductDTO(product);
+        return mapToDTO(product);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> findAll(Pageable pageable) {
+        Page<Product> result = repository.findAll(pageable);
+        return result.map(x -> mapToDTO(x));
+    }
+
+    private ProductDTO mapToDTO(Product product){
+        ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+        return productDTO;
+    }
+
+    private  Product mapToEntity(ProductDTO productDTO){
+        Product product = mapper.map(productDTO, Product.class);
+        return product;
     }
 }
