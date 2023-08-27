@@ -33,11 +33,18 @@ public class ProductService {
         return result.map(x -> mapToDTO(x));
     }
 
+    @Transactional
+    public ProductDTO insert(ProductDTO dto) {
+        Product entity = mapToEntity(dto);
+        entity = repository.save(entity);
+        return mapToDTO(entity);
+    }
+
+    //DTO//
     private ProductDTO mapToDTO(Product product){
         ProductDTO productDTO = mapper.map(product, ProductDTO.class);
         return productDTO;
     }
-
     private  Product mapToEntity(ProductDTO productDTO){
         Product product = mapper.map(productDTO, Product.class);
         return product;
