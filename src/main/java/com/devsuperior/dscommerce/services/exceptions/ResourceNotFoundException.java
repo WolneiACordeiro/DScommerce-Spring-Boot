@@ -1,4 +1,4 @@
-package com.devsuperior.dscommerce.services.exceptios;
+package com.devsuperior.dscommerce.services.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String msg){
