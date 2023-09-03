@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
     ProductDTO findById(Long id);
-    Page<ProductDTO> findAll(Pageable pageable);
+    Page<ProductDTO> findAll(String name, Pageable pageable);
     ProductDTO insert(ProductDTO dto);
     ProductDTO update(Long id, ProductDTO dto);
     void delete(Long id);
