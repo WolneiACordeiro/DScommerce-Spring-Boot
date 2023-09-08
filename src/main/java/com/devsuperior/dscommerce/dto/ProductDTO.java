@@ -27,9 +27,7 @@ public class ProductDTO {
     @Positive(message = "Price needs to be positive")
     private Double price;
     private String imgUrl;
+    @Getter
     @NotEmpty(message = "Must have at least one category")
     private List<CategoryDTO> categories = new ArrayList<>();
-    public List<CategoryDTO> getCategories() {
-        return categories;
-    }
 }

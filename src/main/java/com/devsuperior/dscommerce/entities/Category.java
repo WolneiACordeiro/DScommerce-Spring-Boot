@@ -7,13 +7,13 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Table(name = "tb_category")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Entity
+@Table(name = "tb_category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

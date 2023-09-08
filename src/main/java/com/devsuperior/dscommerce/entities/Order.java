@@ -11,9 +11,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "tb_order")
 public class Order {
@@ -26,11 +26,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
-
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id")
     private Payment payment;
-
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
 }
