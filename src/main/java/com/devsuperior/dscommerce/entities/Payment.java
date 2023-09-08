@@ -10,7 +10,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "tb_payment")
 public class Payment {
