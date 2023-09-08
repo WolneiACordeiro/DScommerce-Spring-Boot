@@ -1,7 +1,9 @@
 package com.devsuperior.dscommerce.services.impl;
 
+import com.devsuperior.dscommerce.dto.CategoryDTO;
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.dto.ProductMinDTO;
+import com.devsuperior.dscommerce.entities.Category;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.repository.ProductRepository;
 import com.devsuperior.dscommerce.services.ProductService;
@@ -19,29 +21,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    ModelMapper mapper;
+
     @Autowired
     private ProductRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
     @Transactional(readOnly = true)
     @Override
     public ProductDTO findById(Long id) {
-            Product product = repository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
-            return mapToDTO(product);
+        Product product = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Resource not found with id: " + id));
+        return modelMapper.map(product, ProductDTO.class);
     }
     @Transactional(readOnly = true)
     @Override
     public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         Page<Product> result = repository.searchByName(name, pageable);
-        return result.map(x -> mapToMinDTO(x));
+        return result.map(product -> modelMapper.map(product, ProductMinDTO.class));
     }
     @Transactional
     @Override
     public ProductDTO insert(ProductDTO dto) {
-        Product entity = mapToEntity(dto);
+        Product entity = modelMapper.map(dto, Product.class);
         entity = repository.save(entity);
-        return mapToDTO(entity);
+        return modelMapper.map(entity, ProductDTO.class);
     }
     @Transactional
     @Override
@@ -52,8 +55,14 @@ public class ProductServiceImpl implements ProductService {
             entity.setDescription(dto.getDescription());
             entity.setPrice(dto.getPrice());
             entity.setImgUrl(dto.getImgUrl());
+            entity.getCategories().clear();
+            for (CategoryDTO catDto : dto.getCategories()) {
+                Category cat = new Category();
+                cat.setId(catDto.getId());
+                entity.getCategories().add(cat);
+            }
             entity = repository.save(entity);
-            return mapToDTO(entity);
+            return modelMapper.map(entity, ProductDTO.class);
         } catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Resource not found with id: " + id);
         }
@@ -70,18 +79,5 @@ public class ProductServiceImpl implements ProductService {
         catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Referential Integrity Failure");
         }
-    }
-    //DTO//
-    private ProductDTO mapToDTO(Product product){
-        ProductDTO productDTO = mapper.map(product, ProductDTO.class);
-        return productDTO;
-    }
-    private ProductMinDTO mapToMinDTO(Product product){
-        ProductMinDTO productDTO = mapper.map(product, ProductMinDTO.class);
-        return productDTO;
-    }
-    private  Product mapToEntity(ProductDTO productDTO){
-        Product product = mapper.map(productDTO, Product.class);
-        return product;
     }
 }

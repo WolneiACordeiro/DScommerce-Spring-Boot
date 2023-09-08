@@ -1,8 +1,12 @@
 package com.devsuperior.dscommerce.dto;
 
-import lombok.Data;
+import com.devsuperior.dscommerce.entities.Product;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductMinDTO {
     private Long id;
     private String name;

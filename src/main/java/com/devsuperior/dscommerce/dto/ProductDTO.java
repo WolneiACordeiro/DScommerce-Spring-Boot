@@ -1,11 +1,21 @@
 package com.devsuperior.dscommerce.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDTO {
     private Long id;
     @NotBlank(message = "Field required")
@@ -15,6 +25,11 @@ public class ProductDTO {
     @Size(min = 10, message = "Description must be at least 10 characters")
     private String description;
     @Positive(message = "Price needs to be positive")
-    private  Double price;
+    private Double price;
     private String imgUrl;
+    @NotEmpty(message = "Must have at least one category")
+    private List<CategoryDTO> categories = new ArrayList<>();
+    public List<CategoryDTO> getCategories() {
+        return categories;
+    }
 }
