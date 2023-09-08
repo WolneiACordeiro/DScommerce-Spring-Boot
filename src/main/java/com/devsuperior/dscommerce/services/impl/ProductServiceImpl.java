@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.services.impl;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
+import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.repository.ProductRepository;
 import com.devsuperior.dscommerce.services.ProductService;
@@ -31,9 +32,9 @@ public class ProductServiceImpl implements ProductService {
     }
     @Transactional(readOnly = true)
     @Override
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         Page<Product> result = repository.searchByName(name, pageable);
-        return result.map(x -> mapToDTO(x));
+        return result.map(x -> mapToMinDTO(x));
     }
     @Transactional
     @Override
@@ -73,6 +74,10 @@ public class ProductServiceImpl implements ProductService {
     //DTO//
     private ProductDTO mapToDTO(Product product){
         ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+        return productDTO;
+    }
+    private ProductMinDTO mapToMinDTO(Product product){
+        ProductMinDTO productDTO = mapper.map(product, ProductMinDTO.class);
         return productDTO;
     }
     private  Product mapToEntity(ProductDTO productDTO){
