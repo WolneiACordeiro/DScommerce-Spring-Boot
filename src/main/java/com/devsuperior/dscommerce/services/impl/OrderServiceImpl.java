@@ -27,7 +27,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private AuthService authService;
-
     @Transactional(readOnly = true)
     @Override
     public OrderDTO findById(Long id) {
@@ -36,7 +35,6 @@ public class OrderServiceImpl implements OrderService {
         authService.validateSelfOrdAdmin(order.getClient().getId());
         return new OrderDTO(order);
     }
-
     @Transactional
     @Override
     public OrderDTO insert(OrderDTO dto) {

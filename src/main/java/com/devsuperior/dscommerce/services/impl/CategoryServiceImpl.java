@@ -27,8 +27,6 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository repository;
-    @Autowired
-    private ModelMapper modelMapper;
     @Transactional(readOnly = true)
     @Override
     public List<CategoryDTO> findAll() {
