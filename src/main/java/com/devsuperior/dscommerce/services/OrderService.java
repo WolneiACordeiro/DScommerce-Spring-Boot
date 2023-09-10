@@ -5,4 +5,5 @@ import com.devsuperior.dscommerce.dto.ProductDTO;
 
 public interface OrderService {
     OrderDTO findById(Long id);
+    OrderDTO insert(OrderDTO dto);
 }
